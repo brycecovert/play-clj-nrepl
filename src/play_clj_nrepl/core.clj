@@ -1,5 +1,6 @@
 (ns play-clj-nrepl.core
   (:require [clojure.tools.nrepl.transport :as t]
+            [clojure.tools.nrepl.server :as s]
             [play-clj.core :refer :all])
   (:import [clojure.tools.nrepl.transport Transport]))
 
@@ -21,11 +22,12 @@
 
 (defn start-nrepl [game port]
     (try
-      (when port (let [{port :port} (clojure.tools.nrepl.server/start-server :port (Integer/parseInt port) :handler (clojure.tools.nrepl.server/default-handler (make-screen-loader-middleware game)))]
+      (when port (let [{port :port} (s/start-server :port (Integer/parseInt port) :handler (s/default-handler (make-screen-loader-middleware game)))]
                     (doseq [port-file ["target/repl-port" ".nrepl-port"]]
                       (-> port-file
                           java.io.File.
                           (doto .deleteOnExit)
                           (spit port)))
                     (println "Started nREPL server on port" port)))
-      (catch Exception e)))
+      (catch Exception e
+        (println e))))
