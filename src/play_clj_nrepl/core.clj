@@ -22,7 +22,10 @@
 
 (defn start-nrepl [game port]
     (try
-      (when port (let [{port :port} (s/start-server :port (Integer/parseInt port) :handler (s/default-handler (make-screen-loader-middleware game)))]
+      (when port (let [{port :port} (s/start-server :port (if (string? port)
+                                                            (Integer/parseInt port)
+                                                            port)
+                                                    :handler (s/default-handler (make-screen-loader-middleware game)))]
                     (doseq [port-file ["target/repl-port" ".nrepl-port"]]
                       (-> port-file
                           java.io.File.
