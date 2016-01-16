@@ -23,7 +23,7 @@ This will start an nrepl server on port 2000. If you attach to this nrepl and re
 ## Example
 
 Here's a play-clj hello world game:
-```
+```clojure
 (ns test-hello.core
   (:require [play-clj.core :refer :all]
             [play-clj.ui :refer :all]
